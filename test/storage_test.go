@@ -11,12 +11,12 @@ func TestStoreAndRetirveReceipt(t *testing.T) {
 	store := storage.NewInMemoryStorage()
 
 	receipt := models.Receipt{
-		Retailer:     "Test Store",
+		Retailer:     "Store123",
 		PurchaseDate: "2022-01-01",
-		PurchaseTime: "13:00",
-		Total:        "10.00",
+		PurchaseTime: "14:30",
+		Total:        "10.25",
 		Items: []models.Item{
-			{"Item 1", "5.00"},
+			{ShortDescription: "Example Item", Price: "5.00"},
 		},
 	}
 
