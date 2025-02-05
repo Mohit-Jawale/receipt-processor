@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"net/http"
+	"receipt-processor/internal/models"
+	"receipt-processor/internal/services"
 
 	"github.com/gin-gonic/gin"
 )
