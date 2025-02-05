@@ -11,7 +11,7 @@ func TestStoreAndRetirveReceipt(t *testing.T) {
 	store := storage.NewInMemoryStorage()
 
 	receipt := models.Receipt{
-		Retailer:     "Store123",
+		Retailer:     "Test Store123",
 		PurchaseDate: "2022-01-01",
 		PurchaseTime: "14:30",
 		Total:        "10.25",
@@ -31,7 +31,7 @@ func TestStoreAndRetirveReceipt(t *testing.T) {
 		t.Errorf("Unexpected error while retrieving receipt: %v", err)
 	}
 
-	if retrieved.Retailer != "Test Store" {
+	if retrieved.Retailer != "Test Store123" {
 		t.Errorf("Expected retailer 'Test Store', got '%s'", retrieved.Retailer)
 	}
 
