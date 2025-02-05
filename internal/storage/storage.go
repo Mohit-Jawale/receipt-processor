@@ -1,13 +1,14 @@
 package storage
 
 import (
+	"errors"
 	"receipt-processor/internal/models"
 	"sync"
 )
 
 type Storage interface {
-	StoreReceipt(id string, receipt models.Receipt)
-	GetReceipt(id string) (models.Receipt, bool)
+	StoreReceipt(id string, receipt models.Receipt) error
+	GetReceipt(id string) (models.Receipt, error)
 }
 
 type InMemoryStorage struct {
@@ -22,19 +23,35 @@ func NewInMemoryStorage() *InMemoryStorage {
 	}
 }
 
-func (s *InMemoryStorage) StorageReceipt(id string, receipt models.Receipt) {
+func (s *InMemoryStorage) StoreReceipt(id string, receipt models.Receipt) error {
 
+	if id == "" {
+		return errors.New("receipt ID cannot be empty")
+	}
+	if receipt.Retailer == "" || receipt.Total == "" {
+		return errors.New("invalid receipt: missing required fields")
+	}
 	s.Lock()
 	defer s.Unlock()
 	s.data[id] = receipt
 
+	return nil
+
 }
 
-func (s *InMemoryStorage) GetReceipt(id string) (models.Receipt, bool) {
+func (s *InMemoryStorage) GetReceipt(id string) (models.Receipt, error) {
+
+	if id == "" {
+		return models.Receipt{}, errors.New("receipt ID cnnot be empty")
+	}
 
 	s.RLock()
 	defer s.RUnlock()
 	receipt, exists := s.data[id]
-	return receipt, exists
+	if !exists {
+		return models.Receipt{}, errors.New("receipt not found")
+
+	}
+	return receipt, nil
 
 }
