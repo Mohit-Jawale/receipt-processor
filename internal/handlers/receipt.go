@@ -9,21 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ProcessReceipt(ctx *gin.Context) {
-
-	var receipt models.Receipt
-
-	if err := ctx.ShouldBindJSON(&receipt); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid receipt format"})
-		return
-	}
-
-	receiptID := services.GenerateReceiptID()
-
-	ctx.JSON(http.StatusOK, gin.H{"id": receiptID})
-
-}
-
 type ReceiptHandler struct {
 	Storage storage.Storage
 }
@@ -44,4 +29,19 @@ func (h *ReceiptHandler) GetReceiptPoints(ctx *gin.Context) {
 	points := services.CalculatePoints(receipt)
 
 	ctx.JSON(http.StatusOK, models.PointsResponse{Points: points})
+}
+
+func (h *ReceiptHandler) ProcessReceipt(ctx *gin.Context) {
+
+	var receipt models.Receipt
+
+	if err := ctx.ShouldBindJSON(&receipt); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid receipt format"})
+		return
+	}
+
+	receiptID := services.GenerateReceiptID()
+
+	ctx.JSON(http.StatusOK, gin.H{"id": receiptID})
+
 }

@@ -17,7 +17,10 @@ func TestProcessReceipt(t *testing.T) {
 
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	router.POST("/receipts/process", handlers.ProcessReceipt)
+
+	store := storage.NewInMemoryStorage()
+	handler := handlers.NewReceiptHandler(store)
+	router.POST("/receipts/process", handler.ProcessReceipt)
 
 	receipt := `{"retailer":"Target","purchaseDate":"2022-01-01","purchaseTime":"13:01","items":[{"shortDescription":"Item 1","price":"5.00"}],"total":"10.00"}`
 
