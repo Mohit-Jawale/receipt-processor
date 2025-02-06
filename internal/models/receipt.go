@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 	"time"
@@ -92,8 +93,9 @@ func (r *Receipt) Validate() error {
 		return fmt.Errorf("invalid total: %w", err)
 	}
 	totalValue, _ := strconv.ParseFloat(r.Total, 64)
-	if totalValue != itemSum {
-		return fmt.Errorf("total does not match sum of item prices (expected: %.2f, got: %.2f)", itemSum, totalValue)
+	roundeditemSum := math.Trunc(itemSum*100) / 100
+	if totalValue != roundeditemSum {
+		return fmt.Errorf("total does not match sum of item prices (expected: %.2f, got: %.2f)", roundeditemSum, totalValue)
 	}
 
 	return nil

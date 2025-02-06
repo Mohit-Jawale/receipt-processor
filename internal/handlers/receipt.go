@@ -23,13 +23,13 @@ func (h *ReceiptHandler) GetReceiptPoints(ctx *gin.Context) {
 
 	receipt, err := h.Storage.GetReceipt(id)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "No receipt found"})
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "No receipt found for that ID."})
 		return
 	}
 
 	points := services.CalculatePoints(receipt)
 
-	ctx.JSON(http.StatusOK, models.PointsResponse{Points: points})
+	ctx.JSON(http.StatusOK, gin.H{"points": points})
 }
 
 func (h *ReceiptHandler) ProcessReceipt(ctx *gin.Context) {
@@ -40,14 +40,14 @@ func (h *ReceiptHandler) ProcessReceipt(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(&receipt); err != nil {
 
-		log.Printf("Invalid receipt format: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid receipt format"})
+		log.Printf("The receipt is invalid. %v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "The receipt is invalid."})
 		return
 	}
 
 	if err := receipt.Validate(); err != nil {
-		log.Printf("Invalid receipt format: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid receipt format"})
+		log.Printf("The receipt is invalid.%v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "The receipt is invalid."})
 		return
 	}
 
