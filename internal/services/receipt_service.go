@@ -15,7 +15,7 @@ func GenerateReceiptID() string {
 	return uuid.New().String()
 }
 
-func CalculatePoints(receipt models.Receipt) int {
+func CalculatePoints(receipt models.Receipt) int64 {
 	points := 0
 
 	// 1. Retailer name points (only alphanumeric characters count)
@@ -58,5 +58,5 @@ func CalculatePoints(receipt models.Receipt) int {
 		points += 10
 	}
 
-	return points
+	return int64(points)
 }

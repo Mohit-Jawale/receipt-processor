@@ -17,5 +17,5 @@ type Item struct {
 
 // Points
 type PointsResponse struct {
-	Points string
+	Points int64
 }

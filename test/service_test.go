@@ -18,7 +18,7 @@ func TestCalculatePoints(t *testing.T) {
 		},
 	}
 
-	expectedPoints := 8 + 6 + 25 + 10 + 1
+	expectedPoints := int64(8 + 6 + 25 + 10 + 1)
 
 	actualPoints := services.CalculatePoints(receipt)
 

@@ -92,15 +92,6 @@ docker run -p 8080:8080 receipt-processor
 
 🎯 **API now runs inside a Docker container!** 🐳
 
----
-
-## 📌 API Documentation
-
-📌 **Swagger UI Available At:**  
-➡ **`http://localhost:8080/swagger/index.html`**
-
----
-
 ## 📌 Project Structure
 
 ```
