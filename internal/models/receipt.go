@@ -54,8 +54,13 @@ func (r *Receipt) Validate() error {
 	}
 
 	// 4. PurchaseDate: Validate format (YYYY-MM-DD)
-	if _, err = time.Parse("2006-01-02", r.PurchaseDate); err != nil {
+	parsedDate, err := time.Parse("2006-01-02", r.PurchaseDate)
+	if err != nil {
 		return fmt.Errorf("invalid purchase date format (YYYY-MM-DD): %w", err)
+	}
+	// Check if the date is in the future
+	if parsedDate.After(time.Now()) {
+		return fmt.Errorf("purchase date cannot be in the future")
 	}
 
 	// 5. PurchaseTime: Validate 24-hour format (HH:MM)
