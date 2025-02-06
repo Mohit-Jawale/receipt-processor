@@ -45,6 +45,12 @@ func (h *ReceiptHandler) ProcessReceipt(ctx *gin.Context) {
 		return
 	}
 
+	if err := receipt.Validate(); err != nil {
+		log.Printf("Invalid receipt format: %v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid receipt format"})
+		return
+	}
+
 	receiptID := services.GenerateReceiptID()
 
 	if err := h.Storage.StoreReceipt(receiptID, receipt); err != nil {
