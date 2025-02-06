@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 	"receipt-processor/internal/models"
 	"receipt-processor/internal/services"
@@ -35,14 +36,26 @@ func (h *ReceiptHandler) ProcessReceipt(ctx *gin.Context) {
 
 	var receipt models.Receipt
 
+	log.Println("Received a request to process a receipt")
+
 	if err := ctx.ShouldBindJSON(&receipt); err != nil {
+
+		log.Printf("Invalid receipt format: %v", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid receipt format"})
 		return
 	}
 
 	receiptID := services.GenerateReceiptID()
 
-	h.Storage.StoreReceipt(receiptID, receipt)
+	if err := h.Storage.StoreReceipt(receiptID, receipt); err != nil {
+
+		log.Printf("Failed to store receipt: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to store receipt"})
+		return
+
+	}
+
+	log.Printf("Receipt stored successfully with ID: %s", receiptID)
 
 	ctx.JSON(http.StatusOK, gin.H{"id": receiptID})
 
