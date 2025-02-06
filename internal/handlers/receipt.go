@@ -42,6 +42,8 @@ func (h *ReceiptHandler) ProcessReceipt(ctx *gin.Context) {
 
 	receiptID := services.GenerateReceiptID()
 
+	h.Storage.StoreReceipt(receiptID, receipt)
+
 	ctx.JSON(http.StatusOK, gin.H{"id": receiptID})
 
 }

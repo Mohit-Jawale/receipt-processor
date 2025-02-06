@@ -15,6 +15,7 @@ type Item struct {
 	Price            string `json:"price"`
 }
 
+// Points
 type PointsResponse struct {
 	Points int
 }
