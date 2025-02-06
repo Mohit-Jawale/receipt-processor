@@ -52,7 +52,7 @@ curl -X POST "http://localhost:8080/receipts/process"      -H "Content-Type: app
          "retailer": "Target",
          "purchaseDate": "2022-01-01",
          "purchaseTime": "13:01",
-         "items": [{"shortDescription": "Item 1", "price": "5.00"}],
+         "items": [{"shortDescription": "Item 1", "price": "10.00"}],
          "total": "10.00"
      }'
 ```
