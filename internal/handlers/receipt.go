@@ -6,6 +6,7 @@ import (
 	"receipt-processor/internal/models"
 	"receipt-processor/internal/services"
 	"receipt-processor/internal/storage"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +28,7 @@ func (h *ReceiptHandler) GetReceiptPoints(ctx *gin.Context) {
 		return
 	}
 
-	points := services.CalculatePoints(receipt)
+	points := strconv.Itoa(services.CalculatePoints(receipt))
 
 	ctx.JSON(http.StatusOK, models.PointsResponse{Points: points})
 }
