@@ -25,7 +25,7 @@ type Item struct {
 
 // Points
 type PointsResponse struct {
-	Points int64
+	Points int64 `json:"points"`
 }
 
 func isValidRegex(value, pattern string) bool {

@@ -59,6 +59,8 @@ func TestGetReceiptPoints(t *testing.T) {
 	receiptID := services.GenerateReceiptID()
 	store.StoreReceipt(receiptID, receipt)
 
+	store.StorePoints(receiptID, 0)
+
 	req, _ := http.NewRequest("GET", "/receipts/"+receiptID+"/points", nil)
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)

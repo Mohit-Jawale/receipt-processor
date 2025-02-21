@@ -11,23 +11,21 @@ import (
 )
 
 type ReceiptHandler struct {
-	Storage storage.Storage
+	store storage.Storage
 }
 
 func NewReceiptHandler(store storage.Storage) *ReceiptHandler {
-	return &ReceiptHandler{Storage: store}
+	return &ReceiptHandler{store: store}
 }
 
 func (h *ReceiptHandler) GetReceiptPoints(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	receipt, err := h.Storage.GetReceipt(id)
+	points, err := h.store.GetPoints(id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "No receipt found for that ID."})
 		return
 	}
-
-	points := services.CalculatePoints(receipt)
 
 	ctx.JSON(http.StatusOK, gin.H{"points": points})
 }
@@ -53,7 +51,21 @@ func (h *ReceiptHandler) ProcessReceipt(ctx *gin.Context) {
 
 	receiptID := services.GenerateReceiptID()
 
-	if err := h.Storage.StoreReceipt(receiptID, receipt); err != nil {
+	points := services.CalculatePoints(receipt)
+
+	if err := h.store.StorePoints(receiptID, points); err != nil {
+		log.Printf("Failed to Store points:%v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to store points"})
+	}
+
+	log.Printf("Points stored successfully with ID: %s", receiptID)
+
+	///ToDo
+	// create a SHA 256 check if its in redis
+	// If not then store recipt if then it duplicate return Error
+	// inside this I can call the calcuation points service and store the point against the UUID
+
+	if err := h.store.StoreReceipt(receiptID, receipt); err != nil {
 
 		log.Printf("Failed to store receipt: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to store receipt"})

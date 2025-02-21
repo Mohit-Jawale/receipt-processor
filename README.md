@@ -76,7 +76,7 @@ curl -X GET "http://localhost:8080/receipts/b4a9f89d-7e35-4c9a-86c5-50a5f25d3f37
 🎯 **Response:**
 
 ```json
-{ "points": 88 }
+{ "points": 89 }
 ```
 
 ---

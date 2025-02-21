@@ -13,6 +13,7 @@ func main() {
 	server := gin.Default()
 
 	store := storage.NewInMemoryStorage()
+
 	receiptHandler := handlers.NewReceiptHandler(store)
 
 	server.POST("/receipts/process", receiptHandler.ProcessReceipt)
